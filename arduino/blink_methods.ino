@@ -14,6 +14,8 @@ const long intervalR = 1000;           // интервал между миган
 const long intervalG = 500;           // интервал между миганиями (миллисекунды)
 const long intervalB = 300;           // интервал между миганиями (миллисекунды)
 
+// Я в своем коде указываю сразу в названии переменной, какая размерность, чтобы потом не искать и не ошибиться
+// например, я бы назвал intervalR_ms
 
 void setup() {
   pinMode(ledPinR, OUTPUT);
@@ -23,7 +25,7 @@ void setup() {
 
 void loop() {
   unsigned long currentMillisR = millis();
-  unsigned long currentMillisG = millis();
+  unsigned long currentMillisG = millis();  // Посмотри, можно ли исопльзовать одну переменную currentMillis для всех процессов?
   unsigned long currentMillisB = millis();
   
   if (currentMillisR - previousMillisR >= intervalR) {
