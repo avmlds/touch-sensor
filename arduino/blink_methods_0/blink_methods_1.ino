@@ -1,25 +1,17 @@
-const int ledPinB =  11;
-const int PairIn = 2;
-
-unsigned long lastMillis = 0;
-const int MillisDelay = 100;
-
-int ledStateB = LOW;
-
 void setup() {
-  pinMode(ledPinB, OUTPUT);
+  pinMode(ledPinR, OUTPUT);
   pinMode(PairIn, INPUT);
 }
 
 void loop() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - lastMillis >= MillisDelay) {
+  unsigned long currentMillis_ms = millis();
+  if (currentMillis_ms - lastMillis_ms >= MillisDelay_ms) {
     if (digitalRead(2) == 1) {
-      ledStateB = led_on(ledPinB, ledStateB);
+      led_on();
     }
     else {
-      ledStateB = led_off(ledPinB, ledStateB);
+      led_off();
     }
-    currentMillis = lastMillis;
+    currentMillis_ms = lastMillis_ms;
   }
 }

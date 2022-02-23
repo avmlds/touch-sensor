@@ -1,13 +1,20 @@
-int led_on(int pin, int state){
-  if (state == LOW){
-    state = HIGH;
-    digitalWrite(pin, state);
+const int ledPinR =  12;
+const int PairIn = 2;
+
+unsigned long lastMillis_ms = 0;
+const int MillisDelay_ms = 100;
+
+int ledStateR = LOW;
+
+void led_on(){
+  if (ledStateR == LOW){
+    ledStateR = HIGH;
+    digitalWrite(ledPinR, ledStateR);
   }  
-  return state;
 }
-int led_off(int pin, int state) {
-  if (state == HIGH){
-    state = LOW;
-    digitalWrite(pin, state);
+void led_off() {
+  if (ledStateR == HIGH){
+    ledStateR = LOW;
+    digitalWrite(ledPinR, ledStateR);
   }
 }
