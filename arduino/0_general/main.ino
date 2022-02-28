@@ -2,7 +2,7 @@ void setup() {
   pinMode(ledPinR, OUTPUT);
   pinMode(ledPinB, OUTPUT);
   pinMode(OptpPairIn, INPUT);
-  myStepper.setSpeed(200);
+  myStepper.setSpeed(VELOCITY);
   Serial.begin(9600);
 }
 
@@ -17,5 +17,4 @@ void loop() {
     }
     currentMillis_ms = lastMillis_ms;
   }
-  action();
 }
