@@ -3,6 +3,7 @@
 int TOTAL_STEPS = 0;
 int VELOCITY = 170;
 int STEPS = 200;
+int IS_INIT = 1;
 
 Stepper myStepper(STEPS , Epin1, Epin2, Epin3, Epin4);
 
@@ -10,27 +11,35 @@ void get_velocity(void) {
   Serial.println(VELOCITY);
 }
 
-int set_velocity(int velocity) {
+void set_velocity(int velocity) {
   VELOCITY = velocity;
   myStepper.setSpeed(VELOCITY);
+  Serial.println("speed was updated");
 }
 
 int down(int steps) {
   myStepper.step(steps);
   TOTAL_STEPS += steps;
+  if (IS_INIT != 0){
+    IS_INIT = 0;
+  }
   return 0;
 }
 
 int up(int steps) {
   myStepper.step(-steps);
   TOTAL_STEPS -= steps;
+  if (IS_INIT != 0){
+    IS_INIT = 0;
+  }
   return 0;
 }
 
 void do_init() {
   while (digitalRead(OptpPairIn) != 1) {
     up(10);
-    TOTAL_STEPS = 0;
+  TOTAL_STEPS = 0;
+  IS_INIT = 1;
   }
   
 }
