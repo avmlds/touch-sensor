@@ -1,11 +1,11 @@
 #include <Stepper.h>
 
 int TOTAL_STEPS = 0;
-int VELOCITY = 170;
-int STEPS = 200;
+int VELOCITY = 200;
+int STEPS = 3200;
 int IS_INIT = 1;
 
-Stepper myStepper(STEPS , Epin1, Epin2, Epin3, Epin4);
+Stepper myStepper(STEPS , Epin2, Epin3);
 
 void get_velocity(void) {
   Serial.println(VELOCITY);

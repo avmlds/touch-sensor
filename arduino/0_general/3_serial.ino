@@ -2,10 +2,10 @@
 void serialEvent() {
   String st = Serial.readStringUntil('\n');
   if (st == "up") {
-    up(2000);
+    up(20000);
     return;
   } else if (st == "down") {
-    down(2000);
+    down(20000);
     return;
   } else if (st == "led_on") {
     serial_led_on();
@@ -23,8 +23,13 @@ void serialEvent() {
   } else if (st == "set_velocity") {
     set_velocity(200);
     return;
+  } else if (st == "val_close") {
+    turn_valve(0);
+    return;
+  } else if (st == "val_open") {
+    turn_valve(125);
+    return;
   }
-
   Serial.println("Wrong command");
   return;
 }

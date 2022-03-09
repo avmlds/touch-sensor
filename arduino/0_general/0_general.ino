@@ -14,7 +14,9 @@ unsigned long lastMillis_ms = 0;
 const int MillisDelay_ms = 100;
 
 // Engine pins
-const int Epin1 = 8;
-const int Epin2 = 9;
-const int Epin3 = 10;
-const int Epin4 = 11;
+const int Epin2 = 2;
+const int Epin3 = 3;
+// Valve pins
+const int ValENA = 6;
+const int ValIn1 = 5;
+const int ValIn2 = 4;
