@@ -4,15 +4,16 @@ import time
 
 def run():
     data = []
-    with open("data.txt", "a") as f:
-        f.write("valve,flow,direction,step,touch\n")
+    print("Started at ", time.strftime("%H:%M:%S:%m"))
+    with open("data.csv", "a") as f:
+        # f.write("valve,flow,direction,step,touch,epoch,time\n")
 
         with serial.Serial('/dev/ttyUSB0', baudrate=115200) as ser:
             valve_str = "val{}\n"
-            for valve in range(200, 213, 1):
+            for valve in range(219, 231, 1):
                 print(f"VALVE: {valve}")
                 ser.write(b"val225\n")
-                time.sleep(3)
+                time.sleep(5)
                 ser.write(b"val0\n")
                 time.sleep(3)
                 ser.write(valve_str.format(valve).encode())
@@ -27,32 +28,32 @@ def run():
                         time.sleep(0.2)
                         ser.write(b"flow\n")
                         flow = ser.read_all().decode().strip()
-                        if step > 10:
+                        if step >= 10:
                             touch = 1
                         else:
                             touch = 0
-                        x = (valve, flow, direction, step, touch)
+                        x = (valve, flow, direction, step, touch, z_counter, time.strftime("%H:%M:%S:%m"))
                         f.write(",".join([f'{j}' for j in x]))
                         f.write("\n")
                         step += 1
-                        print(step)
+                        print(x)
 
                     direction = "b"
-                    while step != 0:
+                    while step != 40:
                         ser.write(b"top1000\n")
                         time.sleep(0.2)
                         ser.write(b"flow\n")
                         flow = ser.read_all().decode().strip()
-                        if step > 10:
+                        if step <= 30:
                             touch = 1
                         else:
                             touch = 0
-                        x = (valve, flow, direction, step, touch)
+                        x = (valve, flow, direction, step, touch, z_counter, time.strftime("%H:%M:%S:%m"))
                         f.write(", ".join([f'{j}' for j in x]))
                         f.write("\n")
 
-                        step -= 1
-                        print(step)
+                        step += 1
+                        print(x)
 
                     z_counter -= 1
     return data
