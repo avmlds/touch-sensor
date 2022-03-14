@@ -1,21 +1,79 @@
 import serial
 import time
 
+
 def run():
-    ser = serial.Serial('/dev/ttyUSB0')
-    print("Starting cycle")
+    data = []
+    with open("data.txt", "a") as f:
+        f.write("valve,flow,direction,step,touch\n")
 
-    while True:
-        print("Moving forward")
-        ser.write(b"1")
-        ser.write(b"3")
-        time.sleep(20)
-        print("Moving backward")
-        ser.write(b"0")
-        ser.write(b"2")
-        time.sleep(20)
+        with serial.Serial('/dev/ttyUSB0', baudrate=115200) as ser:
+            valve_str = "val{}\n"
+            for valve in range(200, 213, 1):
+                print(f"VALVE: {valve}")
+                ser.write(b"val225\n")
+                time.sleep(3)
+                ser.write(b"val0\n")
+                time.sleep(3)
+                ser.write(valve_str.format(valve).encode())
+                time.sleep(3)
+                z_counter = 5
+                while z_counter != 0:
 
-    ser.close()
+                    step = 0
+                    direction = "f"
+                    while step != 20:
+                        ser.write(b"low1000\n")
+                        time.sleep(0.2)
+                        ser.write(b"flow\n")
+                        flow = ser.read_all().decode().strip()
+                        if step > 10:
+                            touch = 1
+                        else:
+                            touch = 0
+                        x = (valve, flow, direction, step, touch)
+                        f.write(",".join([f'{j}' for j in x]))
+                        f.write("\n")
+                        step += 1
+                        print(step)
+
+                    direction = "b"
+                    while step != 0:
+                        ser.write(b"top1000\n")
+                        time.sleep(0.2)
+                        ser.write(b"flow\n")
+                        flow = ser.read_all().decode().strip()
+                        if step > 10:
+                            touch = 1
+                        else:
+                            touch = 0
+                        x = (valve, flow, direction, step, touch)
+                        f.write(", ".join([f'{j}' for j in x]))
+                        f.write("\n")
+
+                        step -= 1
+                        print(step)
+
+                    z_counter -= 1
+    return data
+
 
 if __name__ == "__main__":
-    run()
+    d = run()
+
+
+
+"""
+"led_on"
+"led_off"
+"get_steps"
+"do_init" - init каретку
+"get_velocity"
+"flow" - get flow
+"vel" - set_velocity
+"val"
+"top"
+"low"
+
+
+"""

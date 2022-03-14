@@ -1,13 +1,8 @@
 
 void serialEvent() {
   String st = Serial.readStringUntil('\n');
-  if (st == "up") {
-    up(20000);
-    return;
-  } else if (st == "down") {
-    down(20000);
-    return;
-  } else if (st == "led_on") {
+
+  if (st == "led_on") {
     serial_led_on();
     return;
   } else if (st == "led_off") {
@@ -20,16 +15,53 @@ void serialEvent() {
   } else if (st == "get_velocity") {
     get_velocity();
     return;
-  } else if (st == "set_velocity") {
-    set_velocity(200);
-    return;
-  } else if (st == "val_close") {
-    turn_valve(0);
-    return;
-  } else if (st == "val_open") {
-    turn_valve(125);
+  } else if (st == "flow") {
+    get_flow();
     return;
   }
+  
+  String st_com = st.substring(0, 3);
+  if (st_com == "vel") {
+    st.remove(0, 3);
+    int st_f = st.toInt();
+    set_velocity(st_f);
+    return;
+  } else if (st_com == "val") {
+      
+      st.remove(0, 3);
+      int st_f = st.toInt();
+      
+      if (st_f > 255) {
+        st_f = 255;
+      } else if (st_f < 0){
+        st_f = 0;
+    }
+    turn_valve(st_f);
+    return;
+  } else if (st_com == "top") {
+
+    st.remove(0, 3);
+    long int st_f = st.toInt();
+
+    if (st_f < 0) {
+      return;
+    }
+    
+    up(st_f);
+    return;
+  } else if (st_com == "low") {
+    
+    st.remove(0, 3);
+    long int st_f = st.toInt();
+    
+    if (st_f < 0) {
+      return;
+    }
+    
+    down(st_f);
+    return;
+  } else
+  
   Serial.println("Wrong command");
   return;
 }
