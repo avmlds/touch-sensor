@@ -20,3 +20,13 @@ const int Epin3 = 3;
 const int ValENA = 6;
 const int ValIn1 = 5;
 const int ValIn2 = 4;
+
+long current_millis = 0;
+int send_data = 0;
+
+// Переменные для ПИД регулятора
+int valve_open_pwm_bit = 0; // переменная для хранения значения открытия клапана, нужна для ПИД регулятора
+float press_aim_pa = 5; // целевое давление в Па
+float press_shift_pa = 1; // допустимый сдвиг давления от целевого
+int PID_check_delay_ms = 2000; // пауза между проверками и коррекции клапана для ПИД
+int is_flow_start = 0; // флаг, запустили ли поток газа или он пока около нуля. Нужен для быстрой регуляции ПИД в начале

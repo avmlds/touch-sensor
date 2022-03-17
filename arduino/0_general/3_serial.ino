@@ -18,10 +18,25 @@ void serialEvent() {
   } else if (st == "flow") {
     get_flow();
     return;
+  } else if (st == "shot") {
+    turn_valve(240);
+    delay(3);
+    turn_valve(0);
+    return;
   }
   
   String st_com = st.substring(0, 3);
-  if (st_com == "vel") {
+  if (st_com == "snd"){
+    st.remove(0, 3);
+    int st_f = st.toInt();
+
+    if (st_f == 1){
+      send_data = 1;
+    } else {
+      send_data = 0;
+    }
+    
+  } else if (st_com == "vel") {
     st.remove(0, 3);
     int st_f = st.toInt();
     set_velocity(st_f);
