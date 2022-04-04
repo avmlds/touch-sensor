@@ -12,35 +12,9 @@ MOVE_DOWN = f"mov{MOVE}\n".encode()
 MOVE_UP = f"mov-{MOVE}\n".encode()
 EPOCH = 0
 
-i = iter(
-    [
-
-        (0.25, 1.0),
-        (0.25, 1.25),
-        (0.25, 1.5),
-        (0.25, 1.75),
-        (0.25, 2.0),
-        (0.25, 2.25),
-        (0.25, 2.5),
-        (0.25, 2.75),
-        (0.25, 3.0),
-        (0.25, 3.25),
-        (0.25, 3.5),
-        (0.25, 3.75),
-        (0.25, 4.0),
-        (0.25, 4.25),
-        (0.25, 4.5),
-        (0.25, 4.75),
-        (0.25, 5.0),
-        (0.25, 5.25),
-        (0.25, 5.5),
-        (0.25, 5.75),
-        (0.25, 6.0),
-    ]
-)
 
 DATA = None
-file = open("test_data_025_125_20.csv", "a")
+file = open("test_data_1_5_20_sharp_needle.csv", "a")
 file.write("epoch,mkm_passed,zero,steps,diff_pa_aver,press_shift_pa,press_aim_pa,time")
 file.write("\n")
 
@@ -65,9 +39,9 @@ class WritingThread(threading.Thread):
         counter = 0
         while counter < 20:
             try:
-                global DATA, i, MOVE_UP, MOVE_DOWN, EPOCH
+                global DATA, MOVE_UP, MOVE_DOWN, EPOCH
 
-                shift, value = 0.25, 1.25  # next(i)
+                shift, value = 1, 5  # next(i)
                 DATA = [str(shift), str(value)]
 
                 data = ("thr%s\n" % value).encode()
@@ -89,7 +63,11 @@ class WritingThread(threading.Thread):
             ser.write(b"snd0\n")
 
             ser.write(MOVE_UP)
-            time.sleep(20)
+            time.sleep(5)
+            ser.write(b"val255\n")
+            time.sleep(5)
+            ser.write(b"val0\n")
+            time.sleep(10)
             counter += 1
             EPOCH += 1
         print("End")

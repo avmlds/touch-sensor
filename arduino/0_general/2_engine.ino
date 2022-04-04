@@ -1,8 +1,8 @@
 #include <Stepper.h>
 
-int TOTAL_STEPS = 0;
-int VELOCITY = 200;
-int STEPS = 3200;
+long int TOTAL_STEPS = 0;
+int VELOCITY = 640;
+int STEPS = 1600;
 int IS_INIT = 1;
 
 Stepper myStepper(STEPS , Epin2, Epin3);
@@ -17,32 +17,31 @@ void set_velocity(int velocity) {
   Serial.println("speed was updated");
 }
 
-int down(int steps) {
-  myStepper.step(steps);
-  TOTAL_STEPS += steps;
+
+void EngineMove(void) {
+  if (MOVE_TO < 0){
+    myStepper.step(-STEP);
+    TOTAL_STEPS -= STEP;
+    MOVE_TO += STEP;
+    if (MOVE_TO > 0){
+      SHIFT = 0;
+      MOVE_TO = 0;
+    }
+  } else if (MOVE_TO > 0) {
+    myStepper.step(STEP);
+    TOTAL_STEPS += STEP;
+    MOVE_TO -= STEP;
+    if (MOVE_TO < 0){
+      SHIFT = 0;
+      MOVE_TO = 0;
+    }
+  }
   if (IS_INIT != 0){
     IS_INIT = 0;
   }
-  return 0;
 }
 
-int up(int steps) {
-  myStepper.step(-steps);
-  TOTAL_STEPS -= steps;
-  if (IS_INIT != 0){
-    IS_INIT = 0;
-  }
-  return 0;
-}
-
-void do_init() {
-  while (digitalRead(OptpPairIn) != 1) {
-    up(10);
-  TOTAL_STEPS = 0;
-  IS_INIT = 1;
-  }
-  
-}
+void do_init() {}
 
 void get_steps() {
   Serial.println(TOTAL_STEPS);

@@ -19,10 +19,13 @@ uint16_t conv8us_u16_be(uint8_t* buf) {
 
 /** <!-- i2c_write_reg16 {{{1 --> I2C write bytes with a 16bit register.
 */
-bool i2c_write_reg16(uint8_t slave_addr, uint16_t register_addr,
-                     uint8_t *write_buff, uint8_t len) {
+bool i2c_write_reg16(
+  uint8_t slave_addr,
+  uint16_t register_addr,
+  uint8_t *write_buff,
+  uint8_t len
+) {
   Wire.beginTransmission(slave_addr);
-
   Wire.write(conv16_u8_h(register_addr));
   Wire.write(conv16_u8_l(register_addr));
 
@@ -43,9 +46,7 @@ bool i2c_read_reg8(uint8_t slave_addr, uint8_t register_addr,
   Wire.beginTransmission(slave_addr);
   Wire.write(register_addr);
   Wire.endTransmission();
-
   Wire.requestFrom(slave_addr, len);
-
   if (Wire.available() != len) {
     return true;
   }
@@ -111,7 +112,7 @@ float get_flow_pa_aver(int aver_num) {
 // Функция контроля потока через датчик
 void PID_flow_control(float diff_press_pa_aver) {
   // давление около нуля и нужно быстрее поднять его до рабочих показаний, шагаем сразу по 10 единиц
-  if ( diff_press_pa_aver < 1.0) {
+  if ( diff_press_pa_aver < 0.2) {
     is_flow_start = 0;
     valve_open_pwm_bit +=10;
     turn_valve(valve_open_pwm_bit);
@@ -130,6 +131,6 @@ void PID_flow_control(float diff_press_pa_aver) {
     valve_open_pwm_bit -=1;
     turn_valve(valve_open_pwm_bit);
   }
-  
+
   return;
 }

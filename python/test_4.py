@@ -40,7 +40,7 @@ i = iter(
 )
 
 DATA = None
-file = open("test_data_025_125_20.csv", "a")
+file = open("test_data_025_125_20_sharp_needle_soap.csv", "a")
 file.write("epoch,mkm_passed,zero,steps,diff_pa_aver,press_shift_pa,press_aim_pa,time")
 file.write("\n")
 
@@ -89,7 +89,11 @@ class WritingThread(threading.Thread):
             ser.write(b"snd0\n")
 
             ser.write(MOVE_UP)
-            time.sleep(20)
+            time.sleep(5)
+            ser.write(b"val255\n")
+            time.sleep(5)
+            ser.write(b"val0\n")
+            time.sleep(10)
             counter += 1
             EPOCH += 1
         print("End")

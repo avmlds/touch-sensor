@@ -24,7 +24,7 @@ void serialEvent() {
     turn_valve(0);
     return;
   }
-  
+
   String st_com = st.substring(0, 3);
   if (st_com == "snd"){
     st.remove(0, 3);
@@ -32,20 +32,26 @@ void serialEvent() {
 
     if (st_f == 1){
       send_data = 1;
+      USE_PID = 1;
     } else {
       send_data = 0;
+      USE_PID = 0;
     }
-    
+  } else if (st_com == "pid") {
+    st.remove(0, 3);
+    int st_f = st.toInt();
+    USE_PID = st_f;
+
   } else if (st_com == "vel") {
     st.remove(0, 3);
     int st_f = st.toInt();
     set_velocity(st_f);
     return;
   } else if (st_com == "val") {
-      
+
       st.remove(0, 3);
       int st_f = st.toInt();
-      
+
       if (st_f > 255) {
         st_f = 255;
       } else if (st_f < 0){
@@ -53,30 +59,28 @@ void serialEvent() {
     }
     turn_valve(st_f);
     return;
-  } else if (st_com == "top") {
+  } else if (st_com == "thr"){
+
+    st.remove(0, 3);
+    float st_f = st.toFloat();
+    press_aim_pa = st_f;
+
+  } else if (st_com == "bnd"){
+
+    st.remove(0, 3);
+    float st_f = st.toFloat();
+    press_shift_pa = st_f;
+
+  } else if (st_com == "mov") {
 
     st.remove(0, 3);
     long int st_f = st.toInt();
+    SHIFT = 1;
+    MOVE_TO = st_f;
+    return;
 
-    if (st_f < 0) {
-      return;
-    }
-    
-    up(st_f);
-    return;
-  } else if (st_com == "low") {
-    
-    st.remove(0, 3);
-    long int st_f = st.toInt();
-    
-    if (st_f < 0) {
-      return;
-    }
-    
-    down(st_f);
-    return;
-  } else
-  
+  } else {
   Serial.println("Wrong command");
   return;
+  }
 }
