@@ -4,5 +4,6 @@ void turn_valve(int value){
     Serial.println(value);
     value = 255;
   }
+  valve_value = value;
   analogWrite(ValENA, value);
 }

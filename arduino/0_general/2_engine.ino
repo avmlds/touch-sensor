@@ -1,6 +1,6 @@
 #include <Stepper.h>
 
-int TOTAL_STEPS = 0;
+long int TOTAL_STEPS = 0;
 int VELOCITY = 200;
 int STEPS = 3200;
 int IS_INIT = 1;
@@ -14,7 +14,7 @@ void get_velocity(void) {
 void set_velocity(int velocity) {
   VELOCITY = velocity;
   myStepper.setSpeed(VELOCITY);
-  Serial.println("speed was updated");
+  //Serial.println("speed was updated");
 }
 
 int down(int steps) {

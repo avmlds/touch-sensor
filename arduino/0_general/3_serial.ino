@@ -15,6 +15,9 @@ void serialEvent() {
   } else if (st == "get_velocity") {
     get_velocity();
     return;
+  } else if (st == "get_valve_value") {
+    Serial.println(valve_value);
+    return;
   } else if (st == "flow") {
     get_flow();
     return;
@@ -74,6 +77,17 @@ void serialEvent() {
     }
     
     down(st_f);
+    return;
+  } else if (st_com == "gfa") {
+    
+    st.remove(0, 3);
+    long int st_f = st.toInt();
+    
+    if (st_f < 0) {
+      return;
+    }
+    
+    Serial.println(get_flow_pa_aver(st_f));
     return;
   } else
   
